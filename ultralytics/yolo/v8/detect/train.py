@@ -135,8 +135,18 @@ def train(cfg=DEFAULT_CFG, use_python=False):
         from ultralytics import YOLO
         YOLO(model).train(**args)
     else:
-        trainer = DetectionTrainer(overrides=args)
+        trainer = DetectionTrainer(overrides=args)   # 이 부분 수정-내가 오버라이딩 한걸로
         trainer.train()
+
+
+
+'''
+class CustomTrainer(DetectionTrainer):
+    def get_model(self, cfg, weights):
+
+trainer = CustomTrainer(overrides={})
+trainer.train()
+'''
 
 
 if __name__ == '__main__':

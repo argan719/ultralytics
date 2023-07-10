@@ -481,7 +481,9 @@ class BaseTrainer:
             self.best_fitness = fitness
         return metrics, fitness
 
-    def get_model(self, cfg=None, weights=None, verbose=True):
+
+    # Overriding this function to Customize 
+    def get_model(self, cfg=None, weights=None, verbose=True):    # get_model(cfg, weights) - The function that builds the model to be trained
         """Get model and raise NotImplementedError for loading cfg files."""
         raise NotImplementedError("This task trainer doesn't support loading cfg files")
 
@@ -489,11 +491,16 @@ class BaseTrainer:
         """Returns a NotImplementedError when the get_validator function is called."""
         raise NotImplementedError('get_validator function not implemented in trainer')
 
+
+
+    # Overriding this function to Customize
     def get_dataloader(self, dataset_path, batch_size=16, rank=0, mode='train'):
         """
         Returns dataloader derived from torch.data.Dataloader.
         """
         raise NotImplementedError('get_dataloader function not implemented in trainer')
+
+
 
     def build_dataset(self, img_path, mode='train', batch=None):
         """Build dataset"""
