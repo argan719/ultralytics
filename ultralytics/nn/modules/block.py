@@ -186,6 +186,39 @@ class C2f(nn.Module):
         y = list(self.cv1(x).split((self.c, self.c), 1))
         y.extend(m(y[-1]) for m in self.m)
         return self.cv2(torch.cat(y, 1))
+    
+    
+    
+###########################new part#############################
+class MultiScaleFeatureExtractor(nn.Module): 
+    def __init__(self, in_channels, out_channels):
+        super(MultiScaleFeatureExtractor, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=1)
+        self.conv2 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
+        self.conv3 = nn.Conv2d(in_channels, out_channels, kernel_size=5, padding=2)
+
+    def forward(self, x):
+        out1 = self.conv1(x)
+        out2 = self.conv2(x)
+        out3 = self.conv3(x)
+        # 여기에서 여러 개의 특징 맵을 결합하는 다양한 전략을 사용할 수 있습니다.
+        # 예를 들어, 특징 맵을 쌓거나 연결할 수 있습니다.
+        out = torch.cat([out1, out2, out3], dim=1)
+        return out
+
+
+class FeatureFusion(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(FeatureFusion, self).__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
+        self.upsample = nn.Upsample(scale_factor=2, mode='nearest')
+
+    def forward(self, x, skip_connection):
+        x = self.conv(x)
+        x = self.upsample(x)
+        out = torch.cat([x, skip_connection], dim=1)
+        return out
+################################################################
 
 
 class C3(nn.Module):

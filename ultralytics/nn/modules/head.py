@@ -19,6 +19,28 @@ from .utils import bias_init_with_prob, linear_init_
 __all__ = 'Detect', 'Segment', 'Pose', 'Classify', 'RTDETRDecoder'
 
 
+# class YOLODetect(nn.Module):
+#     def __init__(self, in_channels, num_classes, num_anchors):
+#         super(YOLODetect, self).__init__()
+#         self.num_classes = num_classes
+#         self.num_anchors = num_anchors
+
+#         self.conv1 = nn.Conv2d(in_channels, 256, kernel_size=3, padding=1)
+#         self.conv2 = nn.Conv2d(256, num_anchors * (5 + num_classes), kernel_size=1)
+#         self.new_layer = nn.Conv2d(256, num_anchors * (2 + num_classes), kernel_size=1)
+
+#     def forward(self, x):
+#         x = self.conv1(x)
+#         x = self.conv2(x)
+#         additional_output = self.new_layer(x)  # 추가적인 레이어의 출력
+#         batch_size, _, height, width = x.size()
+#         x = x.view(batch_size, self.num_anchors, 5 + self.num_classes, height, width)
+#         return x, additional_output
+
+
+###################################################
+
+
 class Detect(nn.Module):
     """YOLOv8 Detect head for detection models."""
     dynamic = False  # force grid reconstruction
@@ -351,3 +373,5 @@ class RTDETRDecoder(nn.Module):
         xavier_uniform_(self.query_pos_head.layers[1].weight)
         for layer in self.input_proj:
             xavier_uniform_(layer[0].weight)
+
+################################new part##############################
